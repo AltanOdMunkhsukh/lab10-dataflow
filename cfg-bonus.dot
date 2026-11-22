@@ -1,0 +1,45 @@
+digraph bonus {
+  rankdir=TB;
+  node [fontname="Helvetica", fontsize=11];
+  edge [fontname="Helvetica", fontsize=9];
+
+  start [label="Эхлэл", shape=oval];
+  n32  [label="32: attendance == null || threshold < 0 ?", shape=diamond, style=filled, fillcolor=lightblue];
+  thr  [label="throw IllegalArgumentException", shape=box];
+  n3537 [label="35-37: present = 0; streak = 0; best = 0", shape=box];
+  n38  [label="38: attendance-д дараагийн элемент байгаа юу?", shape=diamond, style=filled, fillcolor=lightblue];
+  n38b [label="38: a = дараагийн элемент", shape=box];
+  n39  [label="39: a > 0 ?", shape=diamond, style=filled, fillcolor=lightblue];
+  n4041 [label="40-41: present = present + 1;\nstreak = streak + 1", shape=box];
+  n42  [label="42: streak > best ?", shape=diamond, style=filled, fillcolor=lightblue];
+  n43  [label="43: best = streak", shape=box];
+  n46  [label="46: streak = 0", shape=box];
+  n49  [label="49: score = 0", shape=box];
+  n50  [label="50: present >= threshold ?", shape=diamond, style=filled, fillcolor=lightblue];
+  n51  [label="51: score = 5", shape=box];
+  n53  [label="53: best >= 5 ?", shape=diamond, style=filled, fillcolor=lightblue];
+  n54  [label="54: score = score + 3", shape=box];
+  n56  [label="56: return score", shape=box];
+
+  start -> n32;
+  n32 -> thr  [label="T\nbonus_nullAttendance_throws\nbonus_negativeThreshold_throws"];
+  n32 -> n3537 [label="F\nbonus_streakWithBreak_is8"];
+  n3537 -> n38;
+  n38 -> n38b [label="T\nbonus_streakWithBreak_is8"];
+  n38 -> n49  [label="F\nbonus_emptyThresholdZero_is5"];
+  n38b -> n39;
+  n39 -> n4041 [label="T\nbonus_streakWithBreak_is8"];
+  n39 -> n46   [label="F\nbonus_allAbsent_is0"];
+  n4041 -> n42;
+  n42 -> n43 [label="T\nbonus_streakWithBreak_is8"];
+  n42 -> n38 [label="F (back edge)\nbonus_streakWithBreak_is8"];
+  n43 -> n38 [label="back edge"];
+  n46 -> n38 [label="back edge"];
+  n49 -> n50;
+  n50 -> n51 [label="T\nbonus_streakWithBreak_is8"];
+  n50 -> n53 [label="F\nbonus_belowThreshold_is0"];
+  n51 -> n53;
+  n53 -> n54 [label="T\nbonus_streakWithBreak_is8"];
+  n53 -> n56 [label="F\nbonus_belowThreshold_is0"];
+  n54 -> n56;
+}
