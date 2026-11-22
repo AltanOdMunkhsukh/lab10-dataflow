@@ -48,4 +48,10 @@ class BonusTest {
     void bonus_streakBelowThreshold_is3() {
         assertEquals(3, DataFlowTargets.bonus(new int[]{1, 1, 1, 1, 1}, 6));
     }
+
+    @Test
+    @DisplayName("BT8 two short streaks: best is 4, not 5 -> 5 (kills M2)")
+    void bonus_twoShortStreaks_is5() {
+        assertEquals(5, DataFlowTargets.bonus(new int[]{1, 1, 0, 1, 1, 1, 1}, 3));
+    }
 }
