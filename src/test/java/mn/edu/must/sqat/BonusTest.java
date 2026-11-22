@@ -18,4 +18,34 @@ class BonusTest {
     void bonus_belowThreshold_is0() {
         assertEquals(0, DataFlowTargets.bonus(new int[]{1}, 2));
     }
+
+    @Test
+    @DisplayName("BT3 null attendance -> exception")
+    void bonus_nullAttendance_throws() {
+        assertThrows(IllegalArgumentException.class, () -> DataFlowTargets.bonus(null, 3));
+    }
+
+    @Test
+    @DisplayName("BT4 negative threshold -> exception")
+    void bonus_negativeThreshold_throws() {
+        assertThrows(IllegalArgumentException.class, () -> DataFlowTargets.bonus(new int[]{1}, -1));
+    }
+
+    @Test
+    @DisplayName("BT5 empty attendance, threshold 0 -> 5")
+    void bonus_emptyThresholdZero_is5() {
+        assertEquals(5, DataFlowTargets.bonus(new int[]{}, 0));
+    }
+
+    @Test
+    @DisplayName("BT6 all absent -> 0")
+    void bonus_allAbsent_is0() {
+        assertEquals(0, DataFlowTargets.bonus(new int[]{0, 0}, 1));
+    }
+
+    @Test
+    @DisplayName("BT7 streak 5 but present below threshold -> 3")
+    void bonus_streakBelowThreshold_is3() {
+        assertEquals(3, DataFlowTargets.bonus(new int[]{1, 1, 1, 1, 1}, 6));
+    }
 }
